@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#DFF3FD"/>
+      <stop offset="1" stop-color="#FFF3C4"/>
+    </linearGradient>
+  </defs>
+  <!-- 底：晴天到檸檬 -->
+  <rect width="512" height="512" rx="116" fill="url(#sky)"/>
+  <!-- 小太陽 -->
+  <circle cx="416" cy="96" r="34" fill="#FFE07A"/>
+  <!-- 對話框 -->
+  <path d="M136 92h240a56 56 0 0 1 56 56v172a56 56 0 0 1-56 56H214l-58 58v-58h-20a56 56 0 0 1-56-56V148a56 56 0 0 1 56-56z" fill="#FFFFFF"/>
+  <!-- 哥哥：藍，大 -->
+  <g>
+    <circle cx="206" cy="236" r="86" fill="#8FD0F5"/>
+    <path d="M200 154q6-24 32-30" fill="none" stroke="#3C9BD9" stroke-width="11" stroke-linecap="round"/>
+    <circle cx="178" cy="228" r="9" fill="#4B4238"/>
+    <circle cx="232" cy="228" r="9" fill="#4B4238"/>
+    <path d="M184 264q22 20 44 0" fill="none" stroke="#4B4238" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="162" cy="254" r="11" fill="#FFB7CF" opacity=".85"/>
+    <circle cx="250" cy="254" r="11" fill="#FFB7CF" opacity=".85"/>
+  </g>
+  <!-- 妹妹：桃，小，兩個小髮束，嘴巴開開在講話 -->
+  <g>
+    <circle cx="282" cy="214" r="16" fill="#FFB29A"/>
+    <circle cx="392" cy="214" r="16" fill="#FFB29A"/>
+    <circle cx="282" cy="214" r="6" fill="#FFB7CF"/>
+    <circle cx="392" cy="214" r="6" fill="#FFB7CF"/>
+    <circle cx="336" cy="270" r="66" fill="#FFB29A"/>
+    <circle cx="316" cy="262" r="8" fill="#4B4238"/>
+    <circle cx="356" cy="262" r="8" fill="#4B4238"/>
+    <ellipse cx="336" cy="294" rx="12" ry="10" fill="#4B4238"/>
+    <ellipse cx="336" cy="298" rx="7" ry="4" fill="#FFB7CF"/>
+    <circle cx="300" cy="288" r="9" fill="#FFB7CF" opacity=".9"/>
+    <circle cx="372" cy="288" r="9" fill="#FFB7CF" opacity=".9"/>
+  </g>
+</svg>

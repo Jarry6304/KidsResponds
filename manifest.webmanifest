@@ -1,0 +1,16 @@
+{
+  "name": "六歲的哥哥，兩歲的妹妹",
+  "short_name": "鬧起來翻這頁",
+  "description": "選誰、選狀況、照劇本說。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FDFBF4",
+  "theme_color": "#DFF3FD",
+  "lang": "zh-Hant-TW",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
