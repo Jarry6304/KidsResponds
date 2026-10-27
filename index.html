@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>六歲的哥哥，兩歲的妹妹</title>
+<meta name="description" content="鬧起來的時候翻這一頁：誰 → 什麼狀況 → 劇本，下面點開解析。2027 年 6 月版。">
+<style>
+  :root{
+    /* 日和配色：晴天、雲、草地、桃子、檸檬、薰衣草；全部淺色，文字用暖褐不用黑 */
+    --bg:#FDFBF4; --sky:#DFF3FD; --ink:#4B4238; --ink2:#7D7266; --line:#EFE9DC; --card:#FFFFFF;
+    --ge:#8FD0F5;  --ge-d:#3C9BD9;  --ge-l:#E6F5FE;   /* 哥哥 晴空藍 */
+    --mei:#FFB29A; --mei-d:#E8714F; --mei-l:#FFEDE5;  /* 妹妹 桃子橘 */
+    --ev:#FFE07A;  --ev-d:#C9960A;  --ev-l:#FFF7D6;   /* 狀況 檸檬黃 */
+    --sc:#A8E6B8;  --sc-d:#2E8C5A;  --sc-l:#E8F8EC;   /* 劇本 草地綠 */
+    --an:#CDBBF5;  --an-d:#7458C9;  --an-l:#F2EDFD;   /* 解析 薰衣草 */
+    --no:#FFB7CF;  --no-d:#C94A74;  --no-l:#FFE9F1;   /* 別說 櫻花粉 */
+    --r:18px;
+    --sans:-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei","Heiti TC",system-ui,sans-serif;
+    --serif:"Noto Serif TC","Songti TC","Source Han Serif TC","PMingLiU",Georgia,serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:linear-gradient(180deg,var(--sky) 0,var(--bg) 220px);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.6}
+  main{max-width:720px;margin:0 auto;padding:0 16px 80px}
+  h1,h2,h3,h4{margin:0;line-height:1.2;font-weight:800}
+  h1{font-size:2.1rem;letter-spacing:-.01em}
+  p{margin:.4em 0}
+  ul{margin:.3em 0;padding-left:1.15em}
+  li{margin:.25em 0}
+  button{font:inherit;color:var(--ink);cursor:pointer}
+  button:focus-visible,summary:focus-visible{outline:3px solid var(--an);outline-offset:3px}
+  .lede{color:var(--ink2);font-size:1rem;max-width:34em}
+  .say{font-family:var(--serif);color:var(--sc-d);font-size:1.25rem;line-height:1.6;font-weight:600}
+  .say::before{content:"「"} .say::after{content:"」"}
+  .muted{color:var(--ink2);font-size:.9rem}
+
+  header{padding:30px 0 6px}
+
+  /* 三層大區塊共用 */
+  .step{margin:26px 0 0;border-radius:var(--r);padding:18px 16px 20px;background:var(--card);box-shadow:0 6px 18px rgba(120,100,60,.08)}
+  .step .lab{display:inline-block;font-size:.85rem;font-weight:800;padding:3px 12px;border-radius:999px;color:var(--ink);margin-bottom:8px;background:#fff}
+  .step h2{font-size:1.7rem;margin-bottom:12px}
+  .step.s1{background:linear-gradient(120deg,var(--ge-l) 0%,#fff 50%,var(--mei-l) 100%)}
+  .step.s2{background:var(--ev-l)}
+  .step.s2 .lab{background:var(--ev)}
+  .step.s3{background:var(--sc-l)}
+  .step.s3 .lab{background:var(--sc)}
+
+  /* 1 誰 */
+  .kids{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .kid{border:3px solid transparent;border-radius:var(--r);padding:16px;text-align:left;background:var(--card);box-shadow:0 3px 0 rgba(120,100,60,.08)}
+  .kid .n{font-size:3rem;font-weight:900;line-height:1;letter-spacing:-.03em}
+  .kid .n small{font-size:1rem;font-weight:700;margin-left:4px}
+  .kid .who{font-size:1.4rem;font-weight:800;margin-top:6px}
+  .kid .when{color:var(--ink2);font-size:.9rem}
+  .kid[data-kid="ge"]{color:var(--ge-d);border-color:var(--ge-l)}
+  .kid[data-kid="mei"]{color:var(--mei-d);border-color:var(--mei-l)}
+  .kid[data-kid="ge"][aria-pressed="true"]{background:var(--ge);border-color:var(--ge-d);color:var(--ink)}
+  .kid[data-kid="mei"][aria-pressed="true"]{background:var(--mei);border-color:var(--mei-d);color:var(--ink)}
+  .kid[aria-pressed="true"] .when{color:var(--ink2)}
+
+  /* 2 什麼狀況：他現在的樣子 + 事件磚 */
+  .dev{background:var(--card);border-radius:14px;padding:12px 14px 6px;margin:0 0 14px}
+  .dev > summary{list-style:none;cursor:pointer;font-weight:800;font-size:1.1rem;display:flex;align-items:center;padding:2px 0 8px}
+  .dev > summary::-webkit-details-marker{display:none}
+  .dev > summary::after{content:"收起";margin-left:auto;font-size:.85rem;font-weight:600;color:var(--ink2)}
+  .dev:not([open]) > summary::after{content:"展開"}
+  .dev:not([open]) > summary{padding-bottom:4px}
+  .devg{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px}
+  .devg h4{font-size:.9rem;color:var(--ink2);margin:6px 0 2px;font-weight:800}
+  .devg ul{margin:0 0 8px;padding-left:1.1em;font-size:.93rem;line-height:1.55}
+  .devg li{margin:.2em 0}
+  .cat{margin:16px 0 6px;font-size:.95rem;font-weight:800;color:var(--ev-d)}
+  .evs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .ev{border:0;border-radius:14px;background:var(--card);padding:14px 14px 12px;text-align:left;box-shadow:0 3px 0 rgba(120,100,60,.08)}
+  .ev .t{font-size:1.2rem;font-weight:800;line-height:1.25}
+  .ev .s{color:var(--ink2);font-size:.9rem;margin-top:4px}
+  .ev[aria-pressed="true"]{background:var(--ev);color:var(--ink);box-shadow:none}
+  .ev[aria-pressed="true"] .s{color:var(--ink2)}
+  .picked{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .picked .ev{flex:1 1 240px}
+  .swap{border:2px solid var(--ev-d);color:var(--ev-d);border-radius:999px;background:#fff;padding:8px 16px;font-weight:800}
+
+  /* 3 劇本 */
+  .scene{font-size:1.05rem;color:var(--ink2);margin-bottom:12px}
+  .first{background:var(--card);border-radius:14px;padding:12px 14px;font-weight:600;font-size:1.05rem}
+  .first b{color:var(--sc-d);margin-right:6px}
+  .lines{list-style:none;margin:10px 0 0;padding:0}
+  .lines li{background:var(--card);border-radius:14px;padding:12px 14px;margin:8px 0}
+  .next{margin-top:18px}
+  .next h3{font-size:1.1rem;margin-bottom:8px}
+  .br{display:grid;grid-template-columns:7em 1fr;gap:10px;background:var(--card);border-radius:14px;padding:10px 14px;margin:8px 0;align-items:start}
+  .br .k{font-weight:800;font-size:1.05rem;padding-top:3px}
+  .br .say{font-size:1.1rem}
+  .br .muted{display:block;margin-top:2px}
+  .noline{background:var(--no-l);border-radius:14px;padding:10px 14px;margin:14px 0 0;font-size:.98rem}
+  .noline b{color:var(--no-d)}
+
+  /* 解析 */
+  .an{margin:18px 0 0;border-radius:var(--r);background:var(--an-l);border:0}
+  .an summary{list-style:none;cursor:pointer;padding:16px 18px;font-size:1.35rem;font-weight:800;color:var(--an-d);display:flex;align-items:center}
+  .an summary::-webkit-details-marker{display:none}
+  .an summary::after{content:"＋";margin-left:auto;font-weight:400}
+  .an[open] summary::after{content:"－"}
+  .an .body{padding:0 16px 16px}
+  .an h3{font-size:1.15rem;margin:16px 0 6px;color:var(--an-d)}
+  .an ul{margin-bottom:0}
+  .an .box{background:var(--card);border-radius:14px;padding:10px 14px}
+  .needs li b,.normal li b{color:var(--ink2);font-weight:700;margin-right:6px}
+  .cores{list-style:none;padding:0;margin:0}
+  .cores li{padding:10px 0;border-bottom:1px dashed var(--line)}
+  .cores li:last-child{border-bottom:0}
+  .cores .nm{font-weight:800;display:block;margin-bottom:2px}
+  .cores .nm small{color:var(--ink2);font-weight:600;margin-left:6px}
+  .grp{font-size:.9rem;font-weight:800;color:var(--an-d);margin:12px 0 4px}
+
+  .tools{margin:14px 0 0;display:flex;gap:8px;flex-wrap:wrap}
+  .tools button{border:2px solid var(--ev);border-radius:999px;background:#fff;padding:6px 14px;font-size:.9rem;font-weight:700}
+  .allview .step.s3{margin-top:30px}
+  footer{margin-top:50px;padding-top:12px;border-top:1px solid var(--line);color:var(--ink2);font-size:.88rem}
+
+  @media (max-width:520px){ .devg{grid-template-columns:1fr} }
+  @media (max-width:430px){ .kid .n{font-size:2.5rem} .evs{grid-template-columns:1fr} .br{grid-template-columns:5.5em 1fr} }
+  @media print{
+    body{background:#fff;color:#000;font-size:11.5pt}
+    .tools,.swap,.kid:not([aria-pressed="true"]){display:none}
+    .step,.br,.an{break-inside:avoid;box-shadow:none}
+    .an summary::after,.dev > summary::after{display:none}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .an .body{animation:open .18s ease-out}
+    @keyframes open{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>六歲的哥哥，兩歲的妹妹</h1>
+  <p class="lede">鬧起來的時候翻這一頁。選誰、選狀況、照劇本說；想知道為什麼，再點開解析。年齡固定在 2027 年 6 月。</p>
+</header>
+
+<section class="step s1" id="s1">
+  <span class="lab">1</span>
+  <h2>誰？</h2>
+  <div class="kids" role="group" aria-label="選孩子">
+    <button type="button" class="kid" data-kid="ge" aria-pressed="false">
+      <div class="n">6<small>歲</small></div>
+      <div class="who">哥哥</div>
+      <div class="when">大班畢業，暑假後小一</div>
+    </button>
+    <button type="button" class="kid" data-kid="mei" aria-pressed="false">
+      <div class="n">2<small>歲</small></div>
+      <div class="who">妹妹</div>
+      <div class="when">兩歲出頭，開始很會說</div>
+    </button>
+  </div>
+</section>
+
+<div id="app" aria-live="polite"></div>
+
+<footer>
+  <p>草案 v0.3。學派內容整理自 parenting-response 專案；發展狀態是這個年齡的一般描述，個別差異正常。教養參考，不是醫療或心理評估。</p>
+</footer>
+
+</main>
+
+<script>
+/* ───────────── 資料 ───────────── */
+const KIDS = {
+  ge: { name:'哥哥', age:'6 歲', pron:'他',
+    dev: {
+      '身體':[
+        '跑跳、騎車、丟接都成熟了；可以寫自己的名字、拼小顆樂高。累的時候手會變笨，「畫壞了」常常是累了。',
+        '一天要睡 10–12 小時，午睡多半不睡了。英文班晚回家那天，七點半以後鬧，先當累。',
+        '餓和累會讓他突然不講理。他會說，只是說不出來的時候就用鬧的。'
+      ],
+      '腦袋':[
+        '開始懂規矩，而且很死板：規矩對他是「對不對」，不是「合不合理」，所以特別在意公平、在意輸贏。',
+        '平靜的時候可以想「妹妹會不會痛」，一激動就想不到了。',
+        '沒有時間感。「五分鐘」要用沙漏、鬧鐘、「這首歌放完」。',
+        '聽得懂簡單的「如果……就……」，但一次只能一個條件；三步指令會掉一步。',
+        '分得清想像和真的，但會把「希望」講成「真的」，那不是說謊。'
+      ],
+      '心理':[
+        '這年紀在練「自己發起」：想自己來、想當大人、想被交代任務。被說「你不會」比被罵更痛。',
+        '快要進入「我做得到嗎」的階段：誇他努力，比誇他結果有用十倍。',
+        '當哥哥的壓力：常被要求讓妹妹。他覺得不公平，多半從這裡來。'
+      ],
+      '情緒和說話':[
+        '會說生氣、難過、害怕。失望、嫉妒、丟臉、不甘心，要大人幫他說出來。',
+        '會談判、會問為什麼、會講條件。這是會說話了，不是頂嘴。',
+        '剛開始學自己冷靜：可以學深呼吸、走開，但要大人先做給他看，而且累的時候做不到。'
+      ]
+    }
+  },
+  mei: { name:'妹妹', age:'2 歲', pron:'她',
+    dev: {
+      '身體':[
+        '走跑爬蹲都會了，但煞不住，跌倒撞到是常態。自己吃會灑、自己穿會卡。',
+        '一天要睡 11–14 小時，含午睡。沒睡午覺的下午幾乎一定崩。',
+        '餓、睏、長牙、太熱、尿布濕，她說不出來，只會鬧。任何崩潰先摸身體。'
+      ],
+      '腦袋':[
+        '世界只有她自己：不是不肯替哥哥想，是還沒有這個功能。',
+        '聽字面、一次一步。「等一下」「待會」對她沒有意思。',
+        '知道東西收起來還在（所以會一直要），但等不了。拿開視線比講道理有用。',
+        '靠模仿學：你做什麼她做什麼，你說什麼她說什麼，包括你罵哥哥那句。'
+      ],
+      '心理':[
+        '這年紀在練「自己做主」：「不要！」「我自己！」一天幾十次是正常，每一次都在練「我是一個人」。',
+        '被笑（羞羞臉、這麼大了還）會留在心裡很久，比打還久。',
+        '她需要在你畫好的範圍裡自己選：紅的還是藍的，先鞋子還是先襪子。'
+      ],
+      '情緒和說話':[
+        '還不會自己冷靜，要靠你的身體和聲音幫她慢下來（抱、拍、講慢一點）。',
+        '情緒來得快去得快。五分鐘前的崩潰她已經忘了，你不用翻。',
+        '聽得懂的遠比說得出的多，很多崩潰是「說不出來」。',
+        '對哥哥：又學他又跟他搶。搶他的東西是「想跟他一樣」，不是故意的。'
+      ]
+    }
+  }
+};
+
+const CATS = [
+  {id:'resist', name:'不肯做'},
+  {id:'cry',    name:'突然大哭'},
+  {id:'blank',  name:'發呆、縮起來'},
+  {id:'sib',    name:'兄妹打起來'},
+  {id:'switch', name:'要結束了不肯'},
+  {id:'public', name:'在外面'}
+];
+
+const CORES = {
+  maslow:  ['Maslow','先顧身體'],
+  satir:   ['Satir','他真正想要的'],
+  erikson: ['Erikson','這年紀在練什麼'],
+  piaget:  ['Piaget','這年紀懂什麼'],
+  pd:      ['正向教養','溫和又堅定'],
+  adler:   ['阿德勒','鼓勵，看他在想什麼'],
+  dreikurs:['Dreikurs','看他的目的'],
+  gottman: ['Gottman','情緒教練'],
+  rogers:  ['Rogers','先聽懂他'],
+  nvc:     ['NVC','好好說']
+};
+const LOOK = ['maslow','satir','erikson','piaget'];
+const TALK = ['pd','adler','dreikurs','gottman','rogers','nvc'];
+
+const EVENTS = [
+/* ───── 哥哥 ───── */
+{ id:'ge-resist-1', kid:'ge', cat:'resist', title:'回家站點不做',
+  scene:'回到家直接衝去玩戰鬥陀螺，叫三次都沒動。',
+  first:'先蹲下看他的陀螺一眼（五秒），再指圖卡。讓圖卡說話，不用你的嘴。',
+  say:['你回來了。先讓我看一下你今天帶哪一顆。','好，圖卡第一站是什麼？你去做，我在旁邊。'],
+  next:[
+    ['去做了','你自己看圖卡就去做了。','照實描述，不說「好棒」。'],
+    ['「等一下啦」','可以。陀螺轉這一局，轉完就去第一站。我幫你看著。','給他選這一局或現在，不再多給。'],
+    ['不理，繼續玩','我不會一直叫你。站點沒做完，自由時間就還沒開始。陀螺先放桌上。','說完走開，不要盯。'],
+    ['炸了','你很想一直玩，被打斷很煩，我知道。','等他呼吸慢了，再指圖卡。']
+  ],
+  avoid:'「講幾百遍了」「每次都要人叫」；拿妹妹比。',
+  normal:[['腦袋','從玩切換到做事，六歲要靠預告和圖卡，不是靠你的聲音。'],['心理','他不是反抗流程，是在練「我先做我想做的」。'],['身體','放學到家最沒電，英文班的日子更沒電。']],
+  needs:[['想被接納','想先跟你玩一下再做事'],['想自己做主','想自己決定順序'],['他其實想要','你看他一眼：「我回來了」']],
+  cores:{
+    maslow:'放學到家是一天最沒電的時候。先喝水，再要求。',
+    satir:'他其實想要的是你看他一眼。先看他的陀螺五秒，站點會順很多。',
+    erikson:'這年紀在練「自己發起」。讓他自己看圖卡自己做，比你用嘴指揮更對味。',
+    piaget:'好幾步的流程他記不住，要靠圖卡；一次只指一站。',
+    pd:'讓圖卡當老大，不是爸爸當老大，他就不用跟你對幹。給他選（這一局或現在），主導權在他手上。',
+    adler:'他可能覺得「回家＝可以玩了」，站點是來搶他時間的。找一件可以誇的事：襪子丟進桶子，媽媽洗衣服就不用找。',
+    dreikurs:'你是煩，不是怒，代表他在要你的注意力。別一直叫（那就是在給注意力），給他一件可以幫忙的事。',
+    gottman:'這題沒有情緒要處理，不用硬套。如果被打斷他炸了，先幫他說出「被打斷很煩」。',
+    rogers:'站在他的角度：剛從學校回家，第一件事想做自己想做的，很合理。',
+    nvc:'書包在門口、襪子還在腳上（說事實），我怕等下來不及（說感受），我想要流程順（說需要），圖卡第一站可以嗎？（提出請求）'
+  }
+},
+{ id:'ge-resist-2', kid:'ge', cat:'resist', title:'不肯進浴室',
+  scene:'洗澡時間到，他說「我不要洗」，躲進樂高堆裡。',
+  first:'洗澡前五分鐘先翻沙漏預告。時間到給二選一，不談洗不洗。',
+  say:['沙漏漏完就洗澡。你要先把這台車蓋到哪裡？','時間到了。你要自己走進去，還是我背你進去？'],
+  next:[
+    ['去了','你自己走進去了，還記得帶毛巾。',''],
+    ['「再五分鐘」','沙漏已經漏完了，剛剛那五分鐘就是你的五分鐘。走路或背？','不再加碼。'],
+    ['就是不要','好，我不拖你。浴室的燈我開了，水放好了，我在裡面等你。','然後真的去等。你不在客廳，他沒有對手。'],
+    ['炸了','樂高還沒蓋完就要停，你很不甘心。','停一拍。「蓋到一半的放這裡，明天從這裡繼續。」']
+  ],
+  avoid:'「再不洗就不講故事」（把固定流程變威脅）；「妹妹都洗好了」。',
+  normal:[['腦袋','「洗澡」對他等於「樂高要結束」。他抗拒的是結束，不是水。'],['心理','想自己決定什麼時候；被命令就反射性說不。'],['身體','八點以後是第二個崩潰時段，拖越久越難。']],
+  needs:[['想自己做主','自己決定什麼時候'],['想被看見','樂高是他的世界'],['他其實想要','我可以自己決定']],
+  cores:{
+    maslow:'八點以後他沒電了，拖越久越不講理。洗澡排早一點比吼有用。',
+    satir:'他說「我不要」不是針對你，是在練習自己做主。用「你要怎麼進去」把做主的感覺留給他。',
+    erikson:'這年紀要「自己決定」。讓他決定蓋到哪裡停、怎麼進浴室。',
+    piaget:'「五分鐘」對他是空的。要看得到的東西：沙漏。',
+    pd:'溫和（我在裡面等你）加堅定（時間到了）。二選一，兩個你都接受。洗完講故事是固定流程，不是拿來交換的。',
+    adler:'幾點洗澡是家裡的事，不是他的事。他可能相信「說不要就能多玩」，別讓這件事真的發生。',
+    dreikurs:'你在怒，就是在跟他爭輸贏。最有用的是離開戰場：你去浴室等，客廳沒人跟他拉扯。',
+    gottman:'如果他炸了，幫他說「不甘心」，不要說「生氣」。六歲可以學這個詞。',
+    rogers:'站在他的角度：正在蓋最重要的一台車，大人叫他停。先承認這件事。',
+    nvc:'車還沒蓋完（事實），我知道你很想繼續（感受），我需要九點前你躺好（需要），沙漏漏完就進去，可以嗎？（請求）'
+  }
+},
+{ id:'ge-cry-1', kid:'ge', cat:'cry', title:'戰鬥陀螺輸了大哭',
+  scene:'跟你對戰輸了，陀螺一摔，趴在地上哭。',
+  first:'不急著教「輸了也沒關係」。靠近、不碰陀螺、聲音放小。',
+  say:['你很想贏這一局。輸了好不甘心。','你摔陀螺的時候手很用力，那個就是不甘心。'],
+  next:[
+    ['繼續哭','我在這裡。你哭完我們再講。','坐旁邊，不講話。'],
+    ['「不算！重來！」','這局算。你可以選：再來一局，或先休息一下再來。',''],
+    ['好一點了','你剛剛自己站起來了。要不要看一下你發射的角度，其實很好。','講過程，不講結果。'],
+    ['「你作弊！」','你覺得我作弊，你很氣。我沒有。你可以說你不想跟我玩了。','不辯。']
+  ],
+  avoid:'「輸了有什麼好哭」「男生不要哭」「再哭就不跟你玩了」。',
+  normal:[['腦袋','六歲開始懂輸贏，但還不懂「有時候會輸」。輸對他等於「我不好」。'],['心理','正站在「我做得到嗎」的門口。輸不起是這年紀的正常，不是個性。'],['身體','晚上或剛放學輸，比白天輸更容易崩。']],
+  needs:[['想要面子','厲害被看見'],['想被愛','輸了還是被喜歡'],['他其實想要','我很厲害']],
+  cores:{
+    maslow:'先看時間。晚上輸比白天輸更難過。',
+    satir:'摔東西＝開始怪別人（都是陀螺的錯、你作弊）。你不要回罵，示範你怎麼好好講。',
+    erikson:'這年紀要的是「我做得到」的證據。輸了以後，找一個他做得好的細節講。',
+    piaget:'他還不懂「有時候會輸」是什麼意思，那句對他是空話。講具體的：這一局他轉比較久，因為……',
+    pd:'輸了可以拆開來看（角度、力道），把注意力從結果移到過程，輸就變成學習。',
+    adler:'他可能相信「只有贏才算數」。摔陀螺是在補這個洞。可以誇的地方：發射技巧進步了。',
+    dreikurs:'一次的情緒事件，看不出目的。別急著歸類，先接情緒。',
+    gottman:'最激動的時候只做一件事：幫他說出情緒。「不甘心」「失望」是他要學的詞。不摔東西的規矩，等情緒過了再講。',
+    rogers:'他的角度：努力了還是輸，世界不公平。把這個說回去給他，不要解釋機率。',
+    nvc:'最激動的時候別用。等他平靜：陀螺摔到地上（事實），我怕它壞（感受），我希望東西好好的（需要），下次不甘心可以摔枕頭，好嗎？（請求）'
+  }
+},
+{ id:'ge-cry-2', kid:'ge', cat:'cry', title:'樂高被妹妹撞倒',
+  scene:'蓋了一下午的樂高被妹妹撞倒，他大哭，然後想打妹妹。',
+  first:'先擋住他的手。然後站在他這邊，先不教「妹妹還小」。',
+  say:['你蓋了一整個下午，被撞倒了。你很氣，而且很心痛。','打妹妹不可以。你可以氣，可以哭，可以來打枕頭。'],
+  next:[
+    ['繼續炸','我在。你氣完我們來看還剩什麼。','抱住，或擋在中間。'],
+    ['「都是她！」','對，是她撞倒的。她兩歲，煞不住。這是爸爸的責任，不是你要原諒她。',''],
+    ['好一點了','你剛剛氣到想打，結果你停下來了。要不要我們先把底座救回來？',''],
+    ['不講話，不要了','你好像很失望，不想蓋了。沒關係。我先把這些放到高的地方，明天你想蓋再拿下來。','']
+  ],
+  avoid:'「妹妹還小你讓她」「再蓋就好了」；逼他原諒。',
+  normal:[['腦袋','他知道是妹妹弄的，也知道妹妹不是故意的。但一激動，這個「知道」就沒用了。'],['心理','這年紀的作品就是他自己。作品被毀等於自己被毀。'],['身體','—']],
+  needs:[['想要面子','作品被看見'],['安全感','我的東西在這個家安不安全'],['想要公平','妹妹做什麼都沒事？']],
+  cores:{
+    maslow:'安全感：他的東西在這個家安不安全？這比情緒更根本。',
+    satir:'不要叫他「當哥哥要讓妹妹」，那是叫他假裝沒事來換和平。他的氣是合理的。',
+    erikson:'作品就是他自己。這次怎麼處理，決定他下次還敢不敢投入一下午。',
+    piaget:'平靜的時候可以講「妹妹不是故意的」，最激動的時候不行。順序要對。',
+    pd:'先修補關係，再講道理。把「打」換成可以的出口（枕頭）。之後一起想：作品放哪裡才安全。',
+    adler:'他可能覺得「妹妹做什麼都沒事，我做什麼都被罵」。公平是這年紀的大事，別讓這次又證明一次。',
+    dreikurs:'你是心疼，不是怒。他想打是想討回來的開始：不要回擊，先修補。',
+    gottman:'情緒全部接受（氣、心痛），行為有規矩（不打）。兩句都要說出口。',
+    rogers:'他的角度：我的東西在這個家不安全。站在他這邊，不要當妹妹的律師。',
+    nvc:'樂高倒了（事實），你很心痛（感受），你需要你的東西被保護（需要），我們找一個妹妹拿不到的地方，好嗎？（請求）'
+  }
+},
+{ id:'ge-blank-1', kid:'ge', cat:'blank', title:'叫他沒反應，一直發呆',
+  scene:'叫他吃飯叫了三次，他盯著窗外沒動，也沒在玩。',
+  first:'走到他面前、蹲到跟他一樣高、碰一下肩膀，再說話。遠遠喊，他聽不進去。',
+  say:['嘿，我在跟你說話。你在想什麼？','吃飯了。你要自己走過來，還是我牽你？'],
+  next:[
+    ['回神','你剛剛在看外面喔。走，吃飯。','不追問為什麼不理。'],
+    ['繼續發呆','你好像很累。先過來坐，吃不吃再說。','先顧身體。'],
+    ['「我在想事情」','好。想完的事可以吃飯的時候跟我說。','給他位置，不逼他講。'],
+    ['被碰就縮','你好像有點怕。我沒有要罵你。','改走「縮起來」那一張。']
+  ],
+  avoid:'「你是聾了嗎」「叫你幾次了」。',
+  normal:[['腦袋','六歲會「神遊」。注意力切換慢，不是故意不理。'],['身體','先排除累、剛睡醒、要生病。'],['心理','如果是被罵之後，那是縮起來，不是發呆。']],
+  needs:[['身體','累'],['安全感','剛被罵？'],['他其實想要','一段沒人叫他的時間']],
+  cores:{
+    maslow:'先排除：累、餓、要生病。',
+    satir:'如果他眼神在躲，可能有一件事不想面對。',
+    piaget:'注意力切換慢是這年紀正常；遠遠喊對他等於沒喊。',
+    pd:'不是行為問題，不用工具。用連結：碰肩、蹲下。',
+    adler:'如果每次被要求都「沒聽到」，他可能在用這招爭一點自己的時間。不定罪，給選擇。',
+    dreikurs:'你是煩。如果常常這樣，可能是在要注意力；只有一次就先當身體累。',
+    gottman:'發呆常常是在消化情緒。問「你在想什麼」比「你在幹嘛」好。',
+    rogers:'讓他發呆是可以的。他可能在想白天的事；說「你好像有心事」然後等。',
+    nvc:'叫三次沒動（事實），我不確定你有沒有聽到（感受），我想確認（需要），看我一下（請求）。'
+  }
+},
+{ id:'ge-blank-2', kid:'ge', cat:'blank', title:'被罵後躲房間不講話',
+  scene:'你剛剛大聲了一下，他跑進房間把門關上，怎麼叫都不出來。',
+  first:'先和好，再談剛才的事。和好的意思是你先低頭，不是等他出來道歉。',
+  say:['我剛剛太大聲了，嚇到你。對不起。','我不會再大聲。你想出來的時候，我在客廳。'],
+  next:[
+    ['不回應','','等。五分鐘後再去門口說一次，不開門。'],
+    ['「你走開」','好，我走開。我沒有生你的氣，我是氣我自己太大聲。',''],
+    ['出來了','你出來了。','不馬上講道理。先一起做件小事，倒水之類。'],
+    ['哭','剛剛很可怕對不對。','抱。']
+  ],
+  avoid:'「出來！」「不出來就不用吃飯」；逼他道歉。',
+  normal:[['心理','被罵後躲起來，是在保護「我是好的」這個感覺，不是任性。'],['腦袋','六歲還不會自己和好，要大人先伸手。'],['身體','—']],
+  needs:[['安全感','會不會不被愛了'],['想被愛','你氣的是事，還是我'],['他其實想要','消失一下，風暴就過了']],
+  cores:{
+    maslow:'安全感被打到了（大人的聲音變成威脅）。補回來比什麼都重要。',
+    satir:'關門是把自己隔開。如果出來後急著說「對不起我乖」，那是怕你，不是和好。',
+    erikson:'這年紀被罵會覺得「我是壞的」。躲起來就是這個感覺在作用；你先道歉，它就不會留下來。',
+    piaget:'他記得你大聲，不記得你為什麼大聲。要解釋，等和好之後，一句就好。',
+    pd:'做錯可以學，大人也一樣。示範怎麼道歉。',
+    adler:'他可能相信「爸爸生氣＝我不好」。用行動告訴他：氣的是事，不是你。',
+    dreikurs:'你現在是愧疚。他沒有目的，他在躲。',
+    gottman:'剛吼過，第一步一定是和好。教情緒放後面。',
+    rogers:'這是他要確定「做錯事還是被愛」的時刻。',
+    nvc:'先承認自己的感受（我累了、我也嚇到了），再開口。'
+  }
+},
+{ id:'ge-sib-1', kid:'ge', cat:'sib', title:'妹妹拿他的車，他推妹妹',
+  scene:'妹妹拿走他的小汽車，他一把推倒妹妹。',
+  first:'先確認妹妹沒受傷。然後第一句給哥哥，不是給妹妹。',
+  say:['妹妹拿走你的車，你很氣。氣可以，推人不可以。','我們先看看妹妹有沒有痛。然後我陪你把車拿回來。'],
+  next:[
+    ['炸了','我在。等你呼吸慢一點我們再講。',''],
+    ['「是她先拿的！」','對，她先拿。她兩歲，還不懂這是你的。這是我的工作，不是你的。',''],
+    ['好一點了','你願意去看她有沒有痛。下次她拿走，你可以說「那是我的」，或來找我。',''],
+    ['「我沒推」','我看到了。我沒有要罰你，我要你知道推人會痛。','']
+  ],
+  avoid:'「妹妹都比你乖」「你是哥哥耶」；逼他當場道歉。',
+  normal:[['腦袋','平靜時知道不能推，一激動這個「知道」就斷線。正常。'],['心理','「我的東西」就是他的地盤。被拿等於被侵犯。'],['身體','—']],
+  needs:[['想要面子','我的東西是我的'],['想要公平','為什麼都是我被罵'],['他其實想要','我才是被欺負的那個']],
+  cores:{
+    maslow:'面子和地盤：他的東西是他的。',
+    satir:'不要逼道歉。逼出來的「對不起」是怕你，不是和好。真正的和好是他自己去看妹妹。',
+    erikson:'給他一件「哥哥可以做的事」（幫妹妹找她的車），不是「哥哥要讓」。',
+    piaget:'不要說「你想想妹妹的感受」，他做不到。用具體規矩：推人會痛。',
+    pd:'先連結再糾正。只問一步：下次怎麼做。不追究。',
+    adler:'公平。他可能覺得「妹妹什麼都可以」。鼓勵他「來找我」，不是自己處理。',
+    dreikurs:'你是怒，但這不是你跟他的戰爭，是兄妹的地盤問題。你的工作是擋住手，不是當法官。',
+    gottman:'「氣可以，推不可以」一句完整，兩半都要。',
+    rogers:'站在他這邊看：東西被拿走了，沒人幫他。',
+    nvc:'車被拿走（事實），你很氣（感受），你需要你的東西被尊重（需要），下次先來找我，好嗎？（請求）'
+  }
+},
+{ id:'ge-sib-2', kid:'ge', cat:'sib', title:'一直來告狀',
+  scene:'一天十次「妹妹拿我的」「妹妹撞我」，要你去罰妹妹。',
+  first:'先回應他的感受，不回應案情。告狀要的是被看見，不是判決。',
+  say:['她又拿你的東西，你很煩。','你希望我怎麼幫你？'],
+  next:[
+    ['要你罰妹妹','我不會罰她，她兩歲。我可以幫你把東西放高。',''],
+    ['「你都不管！」','你覺得我都沒幫你。那我們想一個妹妹拿不到的地方。',''],
+    ['想到辦法','你自己想到放櫃子上。',''],
+    ['還是一直來','你可以告訴我，我會聽。但我不當裁判。','']
+  ],
+  avoid:'「你是哥哥」「不要一直告狀」。',
+  normal:[['腦袋','六歲把規矩當絕對。告狀是「規矩被違反，找大人」，不是壞心。'],['心理','想被確認「我是對的、我被看見」。'],['身體','—']],
+  needs:[['想被愛','你站在我這邊嗎'],['想要面子','我是守規矩的那個']],
+  cores:{
+    maslow:'面子：他想當守規矩的那個。',
+    satir:'如果他說「我都讓她了」，要注意：「讓」不該是他的工作，他在假裝沒事。',
+    erikson:'給他「保護自己東西」的本事，不是給他一個法官。',
+    piaget:'規矩在他腦中是死的，這正常。「妹妹不懂規矩」他聽得懂，但要平靜時說。',
+    pd:'一起想：妹妹拿不到的地方在哪裡？讓他想。',
+    adler:'告狀是他在家裡找位置：「我是守規矩的那個」。別讓「告狀才被看見」成立，看見他其他做得好的事。',
+    dreikurs:'你是煩，他在要注意力。別每次處理案情，處理感受，給方法。',
+    gottman:'「煩」就是對的詞，不要跳過。',
+    rogers:'他的角度：家裡沒人幫他守東西。',
+    nvc:'「你希望我怎麼幫你？」問了就真的聽。'
+  }
+},
+{ id:'ge-switch-1', kid:'ge', cat:'switch', title:'卡通時間到不關',
+  scene:'說好一集，播完他說「再一集」，你去關他就哭。',
+  first:'把「結束」交給片尾曲或鬧鐘。事前說好，到時候做。',
+  say:['片尾曲放完，電視就休息。你要自己按，還是我按？','結束的時候很不甘心，我知道。'],
+  next:[
+    ['「再一集！」','今天是一集，片尾曲已經放了。你按或我按？',''],
+    ['炸了','很想再看，突然結束很難受。','等。「明天同一時間還有一集。」'],
+    ['不關、不哭、拖','我不跟你搶遙控器。片尾曲完我會關，然後我們去吃點心。','下一件事要講得具體。'],
+    ['關了','你自己按掉了。','']
+  ],
+  avoid:'「再吵就一個禮拜不准看」「每次都這樣」。',
+  normal:[['腦袋','六歲沒有時間感。「一集」要靠片尾曲或鬧鐘；自動播放是陷阱，先關掉。'],['心理','想自己決定；被關等於被搶走。'],['身體','螢幕結束後心情掉下來是身體的反應，不是個性。']],
+  needs:[['想自己做主','我決定什麼時候關'],['他其實想要','我能控制']],
+  cores:{
+    maslow:'看電視的時間是不是剛好肚子餓？',
+    satir:'「再一集」是在試你。說到做到，不帶氣。',
+    erikson:'讓他自己按，不是你去搶。',
+    piaget:'「一集」要看得到（片尾曲）。關掉自動播放。',
+    pd:'「一集」是規矩，規矩當老大。二選一（你按我按）。下一件事要具體、好玩。',
+    adler:'他可能相信「哭就能多一集」，如果以前成功過一次。',
+    dreikurs:'你在怒，就是在爭輸贏。別搶遙控器；後果＝明天照約定，跟事情有關、不羞辱、不過頭。',
+    gottman:'幫他說「不甘心」。螢幕突然沒了，真的難受。',
+    rogers:'他的角度：最好的東西突然沒了。',
+    nvc:'片尾曲放完了（事實），我知道你還想看（感受），我需要我們守約定（需要），你按還是我按？（請求）'
+  }
+},
+{ id:'ge-public-1', kid:'ge', cat:'public', title:'餐廳坐不住',
+  scene:'等餐的時候離開座位跑來跑去，撞到服務生。',
+  first:'出門前準備好（著色紙、小車）。要處理就帶到門口或走道，不在桌邊。',
+  say:['等餐很無聊，你想動。','餐廳裡不能跑。你可以選：在位子上畫這張，或跟我去門口走一下。'],
+  next:[
+    ['選了畫畫','你選了畫畫。',''],
+    ['繼續跑','我們去外面，跑到餐來。','帶出去。不能在裡面跑，那就去外面。'],
+    ['炸了','被帶出來你很氣。等你好一點，我們再進去吃。','先出去再談。'],
+    ['撞到人','你撞到人了。我們一起去跟他說對不起。','一起去，不逼他單獨去。']
+  ],
+  avoid:'當眾罵；「人家小孩都乖乖坐」；拿手機止鬧（除非事前就說好）。',
+  normal:[['身體','六歲坐十五分鐘是極限。等餐是空白時間。'],['腦袋','沒辦法用想像填滿等待，手上要有東西。'],['心理','當眾被罵很沒面子，會跑更兇。']],
+  needs:[['身體','餓，而且想動'],['想要面子','不要當眾']],
+  cores:{
+    maslow:'餓加想動。先點一樣馬上會來的。',
+    satir:'當眾不罵。當眾罵，他會跑更兇來逃。',
+    erikson:'給他任務（幫大家發筷子）比禁止有效。',
+    piaget:'「等一下餐就來」他沒概念。用看得到的：湯來了就坐好。',
+    pd:'給選擇；後果跟事情有關（跑→出去）；出門前準備好東西。',
+    adler:'他可能覺得「跑才有人理我」。等餐時大人是不是都在滑手機？',
+    dreikurs:'你是丟臉加煩。別當眾開戰。',
+    gottman:'「無聊」「想動」是感受，先說出來。',
+    rogers:'他的角度：大人一直講話，我什麼都不能做。',
+    nvc:'你離開座位三次（事實），我怕你撞到人（感受），我需要你安全（需要），畫畫或去門口？（請求）'
+  }
+},
+
+/* ───── 妹妹 ───── */
+{ id:'mei-resist-1', kid:'mei', cat:'resist', title:'不肯換尿布、穿衣服',
+  scene:'一躺平就翻身跑掉，尖叫「不要！」',
+  first:'不躺也可以換：站著換、讓她選褲子。用遊戲，不用哄騙。',
+  say:['換尿布。妳要站著換還是躺著換？','這件有車車，這件有花花。妳選。'],
+  next:[
+    ['跑掉','','不追。拿兩件衣服站在原地，等她回來看。'],
+    ['尖叫','妳不想換，妳很氣。','停一拍，然後動手。兩歲的溫和堅定就是「做完」。'],
+    ['配合了','妳自己把腳伸進去了。',''],
+    ['哭','快好了。一、二、三。','抱著換，邊換邊數。']
+  ],
+  avoid:'「羞羞臉」「這麼大了還」；拿哥哥比。',
+  normal:[['心理','「不要」是這年紀的功課，一天幾十次是正常。'],['腦袋','一次一步。「換完就去玩」她聽不懂。'],['身體','可能尿布疹、標籤刺、太冷。先摸一下。']],
+  needs:[['想自己做主','我自己決定'],['安全感','被壓住很可怕'],['她其實想要','我是一個人']],
+  cores:{
+    maslow:'先摸：疹子、冷、標籤。',
+    satir:'「不要」是在練「我是一個人」。別讓她的「不要」被笑。',
+    erikson:'讓她選＝練自己做主；壓住硬換＝她會覺得丟臉。',
+    piaget:'不解釋，做給她看。',
+    pd:'二選一，兩個都可以。多做，少講。',
+    adler:'「我自己」是她想幫忙的開始。讓她做一部分：自己拉褲子。',
+    dreikurs:'兩歲不看目的。這是長大的過程，不是跟你爭。',
+    gottman:'幫她說「妳很氣」，三個字以內。',
+    rogers:'說她看得到的：「妳想跑，不想躺。」',
+    nvc:'兩句就好：事實加感受。「尿布濕濕，妳不舒服。」'
+  }
+},
+{ id:'mei-resist-2', kid:'mei', cat:'resist', title:'不肯坐安全座椅',
+  scene:'一靠近座椅就弓背尖叫，怎麼都扣不上。',
+  first:'這是少數沒得選的事。給的選擇是「怎麼坐」，不是「坐不坐」。',
+  say:['坐車要坐椅子，這個不能選。妳要自己爬上去，還是我抱妳上去？','扣好了。妳要拿車車還是拿書？'],
+  next:[
+    ['尖叫','妳不想被綁住，好氣。','扣好，開車，不談。'],
+    ['弓背','','等她換氣的空檔扣；或先抱出來十秒再回來。'],
+    ['配合了','妳自己爬上去了。',''],
+    ['哭整路','我聽到妳在哭。到了就可以下來。','不回頭安撫，到停車。']
+  ],
+  avoid:'「不坐好警察來抓」；用糖交換。',
+  normal:[['心理','被綁住是這年紀最討厭的事。'],['腦袋','不懂「安全」，只懂「不能動」。'],['身體','椅子燙、帶子卡脖子、剛睡醒。']],
+  needs:[['想自己做主','不要綁我'],['身體','舒不舒服']],
+  cores:{
+    maslow:'椅子燙不燙、帶子卡不卡、是不是剛睡醒。',
+    satir:'不哄、不氣，就是扣上。',
+    erikson:'這年紀也要學「有些事不能選」。只要不羞辱，不會傷她。',
+    piaget:'不解釋安全。給她一個手上的東西。',
+    pd:'堅定的那一半最重要。選擇只在「怎麼坐」。',
+    adler:'安全是大人的事，不談判。',
+    dreikurs:'不是在跟你爭，是被綁住的反應。',
+    gottman:'先說出她的感受，再執行。接受情緒不等於放棄規矩。',
+    rogers:'她的角度：被壓住。承認，但不放。',
+    nvc:'「妳不想被綁，妳很氣。」兩句就好。'
+  }
+},
+{ id:'mei-cry-1', kid:'mei', cat:'cry', title:'無預兆大哭',
+  scene:'好好的突然大哭，說不出為什麼。',
+  first:'不問「怎麼了」，她答不出來。先抱、摸身體，再猜著幫她說。',
+  say:['我在。','妳好累對不對？還是肚子餓？'],
+  next:[
+    ['抱了就停','好，我們去床上躺一下。','是睏，或是要你抱。'],
+    ['抱了還哭','','摸尿布、牙齦、額頭，給水。'],
+    ['推開你','妳不要抱，好。我在旁邊。','坐一公尺外。'],
+    ['指著某個東西','妳要那個。拿不到，好急。','解決，或給別的。']
+  ],
+  avoid:'「哭什麼」「不要哭了」；放著不管當作訓練。',
+  normal:[['身體','兩歲的「無預兆」九成是身體：睏、餓、長牙、太熱、尿布。'],['腦袋','聽得懂很多但說不出。哭就是她的話。'],['心理','還不會自己冷靜，要靠你的身體幫她慢下來。']],
+  needs:[['身體','第一順位'],['安全感','被接住']],
+  cores:{
+    maslow:'這題幾乎全是身體：先補。',
+    piaget:'不問為什麼，她沒有「為什麼」。',
+    pd:'兩歲的哭不是行為問題，不用工具。',
+    dreikurs:'長大的過程，沒有目的。',
+    gottman:'幫她說（妳好累、妳好急）。抱優先，句子極短。',
+    rogers:'說她身體的感覺：「妳的腳在踢，妳很不舒服。」',
+    nvc:'兩句：事實加感受。'
+  }
+},
+{ id:'mei-cry-2', kid:'mei', cat:'cry', title:'想要的拿不到就尖叫',
+  scene:'指著櫃子上哥哥的陀螺尖叫，不給就躺地。',
+  first:'先幫她說出她要什麼，再給別的或講規矩。',
+  say:['妳要哥哥的陀螺。那是哥哥的，不能拿。','妳可以拿這個，或我們去看車車。'],
+  next:[
+    ['躺地','妳好氣。','蹲下等，不抱也不走。三十秒後再給別的。'],
+    ['拿了別的','妳拿自己的了。',''],
+    ['一直指','','帶她離開那個櫃子看得到的地方。看不到就好很多。'],
+    ['打你','打人不可以。','握住手，繼續給別的。']
+  ],
+  avoid:'兇她「哥哥的不准碰」；為了止哭把哥哥的給她（哥哥會覺得這個家不公平）。',
+  normal:[['腦袋','她知道東西在，但等不了。「等一下」沒有意思。'],['心理','「我要」是在練自己做主。'],['身體','說不出「我想要那個像哥哥的」，所以尖叫。']],
+  needs:[['想被聽懂','說不出來'],['想被接納','想跟哥哥一樣'],['她其實想要','我也要跟哥哥一樣']],
+  cores:{
+    satir:'她想要的是跟哥哥一樣。',
+    erikson:'給她「她的」東西練做主，不是給哥哥的。',
+    piaget:'看不到就好很多。拿開視線比講道理有用。',
+    pd:'規矩加別的選擇。選擇要是看得見拿得到的。',
+    adler:'她想跟哥哥一樣。給她一個「她的」。',
+    dreikurs:'長大的過程，不要當成跟你爭。',
+    gottman:'幫她說：「妳好想要」。',
+    rogers:'她的角度：那個東西明明在，為什麼不能？',
+    nvc:'「妳指那個，妳很想要。」'
+  }
+},
+{ id:'mei-blank-1', kid:'mei', cat:'blank', title:'發呆不理人',
+  scene:'叫她名字沒反應，眼神放空幾秒。',
+  first:'走到面前蹲下，進到她看得到的地方，再說話。',
+  say:['妹妹，我在這裡。','妳累了喔？來，抱。'],
+  next:[
+    ['回神','妳看到我了。',''],
+    ['繼續放空','','抱起，摸一下額頭。可能要睡了。'],
+    ['被兇後縮住','我剛剛太大聲，對不起。妳不用怕。','抱。']
+  ],
+  avoid:'「妳聾了嗎」；一直大聲叫名字。',
+  normal:[['身體','兩歲短暫放空多半是累或剛睡醒。'],['腦袋','注意力短，正在消化剛看到的東西。'],['心理','如果是被兇之後，那是縮住，不是發呆。']],
+  needs:[['身體','累'],['安全感','剛被兇？']],
+  cores:{
+    maslow:'累或要睡，先補。',
+    erikson:'被兇後縮住，是覺得丟臉的訊號，趕快和好。',
+    piaget:'注意力切換慢是正常。',
+    gottman:'不硬套。剛被兇，先和好。',
+    rogers:'等她。兩歲也有自己的節奏。'
+  }
+},
+{ id:'mei-sib-1', kid:'mei', cat:'sib', title:'搶哥哥的車，被推倒',
+  scene:'她抓哥哥正在玩的車，哥哥一推，她倒地哭。',
+  first:'兩個都要處理。先摸她有沒有受傷，第一句給哥哥（見哥哥那張），然後給妹妹別的。',
+  say:['妳想跟哥哥玩車車。那台是哥哥的，這台給妳。','跌倒了，痛痛。哥哥不可以推，爸爸跟他說了。'],
+  next:[
+    ['繼續抓','妹妹的車在這裡。','帶開，給她的車。'],
+    ['哥哥不給，她崩潰','','各自一台，分開五分鐘。'],
+    ['說「哥哥」要跟','妹妹的車跟哥哥的車一起排隊。','讓兩個人各玩各的、但在一起。']
+  ],
+  avoid:'「哥哥壞壞」（她會學著怪人）；「妳不要去煩哥哥」。',
+  normal:[['腦袋','她不懂「哥哥在玩」等於「不能拿」。看到就拿是正常。'],['心理','學哥哥，想跟他一樣。'],['身體','被推倒要檢查。']],
+  needs:[['想被接納','想跟哥哥一起玩'],['安全感','被推']],
+  cores:{
+    maslow:'安全：被推。',
+    satir:'別在她面前大罵哥哥，她會學著怪別人。',
+    erikson:'她自己的一台。',
+    piaget:'她不懂「正在玩」。看不到就不要。',
+    pd:'分開空間不是處罰，是把環境弄好。',
+    adler:'她要的是跟哥哥一樣。給她「一樣的」比禁止有效。',
+    dreikurs:'沒有目的，在模仿。',
+    gottman:'幫她說「痛痛」「想跟哥哥」。',
+    rogers:'她的角度：哥哥的東西好好玩。',
+    nvc:'兩句就好。'
+  }
+},
+{ id:'mei-switch-1', kid:'mei', cat:'switch', title:'公園要回家不肯走',
+  scene:'說要回家，她跑開、躺地、尖叫。',
+  first:'用儀式結束（跟溜滑梯說拜拜、推車選位子），不用「要回家了」這句話。',
+  say:['最後一次溜。溜完跟溜滑梯說拜拜。','妳要走路到推車，還是我抱？'],
+  next:[
+    ['躺地','妳不想走，好氣。','蹲下等十秒，然後抱起走。不談。'],
+    ['跑開','我在這裡等妳。','不追著喊。走向出口，看得到她就好。'],
+    ['配合了','妳跟溜滑梯說拜拜了。',''],
+    ['哭整路','我知道妳還想玩。','推車上給水。']
+  ],
+  avoid:'「再不走我就自己走了」；「哥哥都乖乖走了」。',
+  normal:[['腦袋','「要回家了」對她沒有預告功能。要用身體（走過去），不用句子。'],['心理','這年紀「不要走」是正常。'],['身體','公園後通常又累又餓，崩潰在預期內。']],
+  needs:[['想自己做主','我決定'],['身體','累、餓']],
+  cores:{
+    maslow:'累和餓在後面等著。帶點心。',
+    satir:'不哄不氣，抱起就走。',
+    erikson:'讓她決定「怎麼走」，不決定「走不走」。',
+    piaget:'「最後一次」要做得到（溜一次），不是用講的。',
+    pd:'固定儀式；二選一；做完。',
+    dreikurs:'長大的過程。',
+    gottman:'幫她說「不想走」。接受，但走。',
+    rogers:'她的角度：最好玩的地方要沒了。',
+    nvc:'兩句就好。'
+  }
+},
+{ id:'mei-public-1', kid:'mei', cat:'public', title:'賣場躺地',
+  scene:'要拿架上的東西，不給就躺在走道尖叫。',
+  first:'你的丟臉是你的事。先把她抱離走道，再處理。',
+  say:['妳想要那個，不能拿，好氣。','我們去看魚魚。'],
+  next:[
+    ['躺地','妳好氣。','抱起，走到安靜的地方，等。'],
+    ['尖叫不停','','離開賣場五分鐘，外面站一下，再回來或直接走。'],
+    ['配合了','妳跟我一起走了。',''],
+    ['哥哥也在旁邊要','','各自一句，不當眾審判。']
+  ],
+  avoid:'當眾罵；買東西止哭；「再哭就把妳留在這裡」。',
+  normal:[['腦袋','看到就是要。不懂「買」。拿開視線最有效。'],['心理','她不在乎當眾，你在乎。'],['身體','賣場太吵太亮，推車坐太久。']],
+  needs:[['身體','太吵太亮'],['想自己做主','我要']],
+  cores:{
+    maslow:'太吵太亮是主因。逛短一點。',
+    satir:'當眾不罵。',
+    erikson:'給她一件「可以拿」的：幫忙拿一包米。',
+    piaget:'拿開視線。',
+    pd:'推車帶玩具、避開玩具區。',
+    dreikurs:'沒有目的：太刺激加想自己做主。',
+    gottman:'幫她說。賣場不講理。',
+    rogers:'她的角度：這麼多東西都不能拿。'
+  }
+}
+];
+
+/* ───────────── 畫面 ───────────── */
+const app = document.getElementById('app');
+let state = { kid:null, ev:null, all:false };
+
+function readHash(){
+  const h = location.hash.replace(/^#/,'').split('/');
+  state.kid = KIDS[h[0]] ? h[0] : null;
+  state.all = h[1] === 'all';
+  state.ev  = (!state.all && h[1] && EVENTS.some(e=>e.id===h[1] && e.kid===state.kid)) ? h[1] : null;
+}
+function setHash(h){ if(location.hash===h) render(); else location.hash = h; }
+function say(t){ return t ? '<span class="say">'+t+'</span>' : ''; }
+const catName = id => CATS.find(c=>c.id===id).name;
+
+function evTile(e, pressed){
+  return '<button type="button" class="ev" data-ev="'+e.id+'" aria-pressed="'+pressed+'"><div class="t">'+e.title+'</div><div class="s">'+e.scene+'</div></button>';
+}
+
+function renderList(mine){
+  let s = '';
+  CATS.forEach(c=>{
+    const evs = mine.filter(e=>e.cat===c.id);
+    if(!evs.length) return;
+    s += '<div class="cat">'+c.name+'</div><div class="evs">'+evs.map(e=>evTile(e,false)).join('')+'</div>';
+  });
+  return s;
+}
+
+function renderScript(e, standalone){
+  const k = KIDS[e.kid];
+  let s = '<section class="step s3"><span class="lab">3</span><h2>劇本</h2>';
+  if(standalone) s += '<p style="font-weight:800;font-size:1.2rem;margin:0 0 2px">'+e.title+'</p>';
+  s += '<p class="scene">'+e.scene+'</p>';
+  s += '<div class="first"><b>先做</b>'+e.first+'</div>';
+  s += '<ul class="lines">'+e.say.map(t=>'<li>'+say(t)+'</li>').join('')+'</ul>';
+  s += '<div class="next"><h3>接下來'+k.pron+'可能……</h3>'
+     + e.next.map(n=>'<div class="br"><div class="k">'+n[0]+'</div><div>'+say(n[1])+(n[2]?'<span class="muted">'+n[2]+'</span>':'')+'</div></div>').join('')
+     + '</div>';
+  s += '<div class="noline"><b>別說</b> '+e.avoid+'</div>';
+
+  s += '<details class="an"><summary>解析</summary><div class="body">';
+  s += '<h3>這件事正常嗎</h3><div class="box"><ul class="normal">'+e.normal.filter(n=>n[1]!=='—').map(n=>'<li><b>'+n[0]+'</b>'+n[1]+'</li>').join('')+'</ul></div>';
+  s += '<h3>'+k.pron+'可能在要什麼</h3><div class="box"><ul class="needs">'+e.needs.map(n=>'<li><b>'+n[0]+'</b>'+n[1]+'</li>').join('')+'</ul></div>';
+  s += '<h3>各學派怎麼看</h3><div class="box">';
+  s += '<div class="grp">先看什麼</div><ul class="cores">'+LOOK.filter(c=>e.cores[c]).map(c=>'<li><span class="nm">'+CORES[c][0]+'<small>'+CORES[c][1]+'</small></span>'+e.cores[c]+'</li>').join('')+'</ul>';
+  s += '<div class="grp">怎麼說</div><ul class="cores">'+TALK.filter(c=>e.cores[c]).map(c=>'<li><span class="nm">'+CORES[c][0]+'<small>'+CORES[c][1]+'</small></span>'+e.cores[c]+'</li>').join('')+'</ul>';
+  s += '</div></div></details></section>';
+  return s;
+}
+
+function renderDev(k, open){
+  let s = '<details class="dev"'+(open?' open':'')+'><summary>'+k.age+'的'+k.pron+'，現在大概是這樣</summary><div class="devg">';
+  for(const g in k.dev){ s += '<div><h4>'+g+'</h4><ul>'+k.dev[g].map(x=>'<li>'+x+'</li>').join('')+'</ul></div>'; }
+  return s+'</div></details>';
+}
+
+function render(){
+  document.querySelectorAll('.kid').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.kid===state.kid)));
+  if(!state.kid){ app.innerHTML=''; return; }
+  const k = KIDS[state.kid];
+  const mine = EVENTS.filter(e=>e.kid===state.kid);
+  const ev = state.ev ? mine.find(e=>e.id===state.ev) : null;
+
+  let s = '<section class="step s2"><span class="lab">2</span><h2>'+k.name+'現在什麼狀況？</h2>';
+  s += renderDev(k, !ev);   // 瀏覽狀況時展開；選定狀況後收成一行，點一下可再展開
+  if(ev){
+    s += '<div class="picked">'+evTile(ev,true)+'<button type="button" class="swap" data-swap>換一個狀況</button></div>';
+  } else {
+    s += renderList(mine);
+    s += '<div class="tools"><button type="button" data-all="'+(state.all?0:1)+'">'+(state.all?'收起全部':'全部展開（列印用）')+'</button></div>';
+  }
+  s += '</section>';
+
+  if(ev) s += renderScript(ev,false);
+  else if(state.all) s += '<div class="allview">'+mine.map(e=>renderScript(e,true)).join('')+'</div>';
+
+  app.innerHTML = s;
+  app.querySelectorAll('[data-ev]').forEach(b=>b.addEventListener('click', ()=>setHash('#'+state.kid+'/'+b.dataset.ev)));
+  app.querySelectorAll('[data-swap]').forEach(b=>b.addEventListener('click', ()=>setHash('#'+state.kid)));
+  app.querySelectorAll('[data-all]').forEach(b=>b.addEventListener('click', ()=>setHash('#'+state.kid+(b.dataset.all==='1'?'/all':''))));
+  if(ev){ const t=document.querySelector('.s3'); if(t) t.scrollIntoView({block:'start'}); }
+  else if(!state.all){ const t=document.querySelector('.s2'); if(t) t.scrollIntoView({block:'start'}); }
+}
+
+document.querySelectorAll('.kid').forEach(b=>b.addEventListener('click', ()=>setHash('#'+b.dataset.kid)));
+window.addEventListener('hashchange', ()=>{ readHash(); render(); });
+readHash(); render();
+</script>
+</body>
+</html>
